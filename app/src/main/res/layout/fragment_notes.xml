@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_height="match_parent" android:layout_width="match_parent">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My notes"
+        android:textSize="24sp"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/labelNotesName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Название заметки" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+    <TextView
+        android:id="@+id/DateNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Дата заметки" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="date" />
+    <TextView
+        android:id="@+id/labelDescNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Описание заметки" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editDescNotes"
+        android:layout_width="match_parent"
+        android:layout_height="442dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/addNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Добавить заметку" />
+
+    <Button
+        android:id="@+id/goListNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="К списку заметок" />
+
+</LinearLayout>
