@@ -35,7 +35,7 @@ public class ActivityNotes extends AppCompatActivity {
             return;
         }
         initElements();
-        fillingData();
+        //fillingData();
     }
 
     private void fillingData() {
