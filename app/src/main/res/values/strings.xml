@@ -3,4 +3,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nameNotes">Мои заметки</string>
+    <string name="menu_add">Добавить</string>
+    <string name="menu_clear">Очистить</string>
+    <string name="Search">Поиск</string>
+    <string name="Settings">Настройки</string>
+    <string name="main">Основное</string>
+    <string name="Favorite">Избранное</string>
+    <string name="more">Больше</string>
 </resources>

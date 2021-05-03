@@ -41,7 +41,7 @@ public class ActivityNotes extends AppCompatActivity {
     private void fillingData() {
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
-            myNotes = (MyNotes) arguments.getSerializable(ActivityNotes.class.getSimpleName());
+            myNotes = (MyNotes) arguments.getSerializable(MyNotes.class.getSimpleName());
             if (myNotes != null) {
                 editTextTextPersonName.setText(myNotes.getName());
                 editTextDate.setText(myNotes.getDateCreate());
@@ -56,24 +56,16 @@ public class ActivityNotes extends AppCompatActivity {
         editDescNotes = findViewById(R.id.editDescNotes);
         Button addNotes = findViewById(R.id.addNotes);
         // при нажатии на кнопку - добавляем заметку
-        addNotes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyNotes myNotes = new MyNotes(
-                        String.valueOf(editTextTextPersonName.getText()),
-                        String.valueOf(editDescNotes.getText()),
-                        String.valueOf(String.valueOf(editTextDate.getText())));
-                goToMain(myNotes);
-            }
+        addNotes.setOnClickListener(v -> {
+            MyNotes myNotes = new MyNotes(
+                    String.valueOf(editTextTextPersonName.getText()),
+                    String.valueOf(editDescNotes.getText()),
+                    String.valueOf(String.valueOf(editTextDate.getText())));
+            goToMain(myNotes);
         });
         Button goListNotes = findViewById(R.id.goListNotes);
         // при нажатии на кнопку возврат к списку заметок
-        goListNotes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToListNotes();
-            }
-        });
+        goListNotes.setOnClickListener(v -> goToListNotes());
 
     }
 
