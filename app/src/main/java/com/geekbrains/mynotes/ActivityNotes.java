@@ -65,12 +65,7 @@ public class ActivityNotes extends AppCompatActivity {
         });
         Button goListNotes = findViewById(R.id.goListNotes);
         // при нажатии на кнопку возврат к списку заметок
-        goListNotes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToListNotes();
-            }
-        });
+        goListNotes.setOnClickListener(v -> goToListNotes());
 
     }
 
