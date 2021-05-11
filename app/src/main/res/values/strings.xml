@@ -10,4 +10,9 @@
     <string name="main">Основное</string>
     <string name="Favorite">Избранное</string>
     <string name="more">Больше</string>
+    <string name="add">Добавить</string>
+    <string name="clear">Очистить</string>
+    <string name="Open">Открыть</string>
+    <string name="Del">Удалить</string>
+    <string name="SaveNotes">Сохранить</string>
 </resources>
