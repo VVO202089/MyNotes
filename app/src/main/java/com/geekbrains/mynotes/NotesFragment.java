@@ -1,8 +1,5 @@
 package com.geekbrains.mynotes;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,7 +14,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -29,10 +25,11 @@ public class NotesFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    //
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private ArrayList<MyNotes> arrayNotes = new ArrayList<>();
+    private ArrayList<Card_MyNotes> arrayNotes = new ArrayList<>();
     private EditText editTextTextPersonName;
     private EditText editTextDate;
     private EditText editDescNotes;
@@ -85,7 +82,7 @@ public class NotesFragment extends Fragment {
         editTextDate = (EditText)view.findViewById(R.id.editTextDate);
         editDescNotes = (EditText)view.findViewById(R.id.editDescNotes);
         // выводим список созданных заметок
-        for (MyNotes notes: arrayNotes) {
+        for (Card_MyNotes notes: arrayNotes) {
             String note = notes.getName();
             TextView ViewNote = new TextView(getContext());
             ViewNote.setText(note);
@@ -102,11 +99,11 @@ public class NotesFragment extends Fragment {
 
         }
 
-        Button AddNotes = (Button)view.findViewById(R.id.addNotes);
+        Button AddNotes = (Button)view.findViewById(R.id.SaveNotes);
         AddNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyNotes myNotes = new MyNotes(
+                Card_MyNotes myNotes = new Card_MyNotes(
                         String.valueOf(editTextTextPersonName.getText()),
                         String.valueOf(editDescNotes.getText()),
                         String.valueOf(String.valueOf(editTextDate.getText()))
@@ -133,7 +130,7 @@ public class NotesFragment extends Fragment {
 
     }
 
-    public ArrayList<MyNotes> getArrayNotes() {
+    public ArrayList<Card_MyNotes> getArrayNotes() {
         return arrayNotes;
     }
 }

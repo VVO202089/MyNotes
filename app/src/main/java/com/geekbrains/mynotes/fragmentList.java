@@ -76,6 +76,11 @@ public class fragmentList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         MainActivity mainActivity = (MainActivity)getActivity();
+        // если ориентация главного активити горизонтальная, тогда добавляем фрагмент
+        if (mainActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_List,new NotesFragment()).commit();
+        }
         //arrayNotes = mainActivity.getArrayNotes();
         //if (arrayNotes!= null){
             //myNotes = (MyNotes)getArguments().getSerializable(MyNotes.class.getSimpleName());
@@ -87,7 +92,7 @@ public class fragmentList extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initList(view);
+        //initList(view);
     }
 
     private void initList(View view) {
