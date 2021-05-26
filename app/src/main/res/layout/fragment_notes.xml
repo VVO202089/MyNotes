@@ -7,7 +7,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="My notes"
+        android:text="@string/my_notes"
         android:textSize="24sp"
         android:textStyle="italic"/>
 
@@ -15,35 +15,39 @@
         android:id="@+id/labelNotesName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Название заметки" />
-    <com.google.android.material.textfield.TextInputEditText
+        android:text="@string/NotesName" />
+
+    <EditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:text="@string/nameMyNotes"
+        android:autofillHints="" />
+
     <TextView
         android:id="@+id/DateNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Дата заметки" />
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/editTextDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="date" />
-    <TextView
+        android:inputType = "date" />
+    <EditText
         android:id="@+id/labelDescNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
         android:text="Описание заметки" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/editDescNotes"
         android:layout_width="match_parent"
-        android:layout_height="442dp"
+        android:layout_height="301dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine" />
@@ -52,7 +56,7 @@
         android:id="@+id/SaveNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Сохранить" />
+        android:text="@string/SaveButton" />
 
     <Button
         android:id="@+id/goListNotes"

@@ -1,20 +1,26 @@
 package com.geekbrains.mynotes;
 
+import android.view.View;
+
 import java.util.List;
 
-public class NotesSourceImpl implements CardMyNotes_Source{
+public class NotesSourceImpl implements CardMyNotesSource {
+    @Override
+    public void addCardNotes(CardMyNotes cardNotes) {
 
-    private List<Card_MyNotes>dataSource;
+    }
 
-    public NotesSourceImpl(List<Card_MyNotes> dataSource) {
+    /*private List<CardMyNotes>dataSource;
+
+    public NotesSourceImpl(List<CardMyNotes> dataSource) {
         this.dataSource = dataSource;
     }
 
     public  NotesSourceImpl init(){
         // для теста
-        Card_MyNotes myNotes1 = new Card_MyNotes("Notes1", "Тестовая первая заметка", "01.01.2021");
-        Card_MyNotes myNotes2 = new Card_MyNotes("Notes2", "Тестовая вторая заметка", "02.01.2021");
-        Card_MyNotes myNotes3 = new Card_MyNotes("Notes3", "Тестовая третья заметка", "03.01.2021");
+        CardMyNotes myNotes1 = new CardMyNotes("Notes1", "Тестовая первая заметка", "01.01.2021");
+        CardMyNotes myNotes2 = new CardMyNotes("Notes2", "Тестовая вторая заметка", "02.01.2021");
+        CardMyNotes myNotes3 = new CardMyNotes("Notes3", "Тестовая третья заметка", "03.01.2021");
         dataSource.add(myNotes1);
         dataSource.add(myNotes2);
         dataSource.add(myNotes3);
@@ -22,9 +28,8 @@ public class NotesSourceImpl implements CardMyNotes_Source{
         return this;
     }
 
-
     @Override
-    public Card_MyNotes getCardNotes(int position) {
+    public CardMyNotes getCardNotes(int position) {
         return dataSource.get(position);
     }
 
@@ -39,12 +44,12 @@ public class NotesSourceImpl implements CardMyNotes_Source{
     }
 
     @Override
-    public void updateCardNotes(int position, Card_MyNotes cardNotes) {
+    public void updateCardNotes(int position, CardMyNotes cardNotes) {
         dataSource.set(position,cardNotes);
     }
 
     @Override
-    public void addCardNotes(Card_MyNotes cardNotes) {
+    public void addCardNotes(CardMyNotes cardNotes) {
         dataSource.add(cardNotes);
     }
 
@@ -52,4 +57,9 @@ public class NotesSourceImpl implements CardMyNotes_Source{
     public void clearCardNotes() {
         dataSource.clear();
     }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }*/
 }

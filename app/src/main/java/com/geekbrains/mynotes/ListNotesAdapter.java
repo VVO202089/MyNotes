@@ -1,7 +1,6 @@
 package com.geekbrains.mynotes;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,7 +11,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -20,12 +18,18 @@ import java.util.List;
 public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private List<Card_MyNotes> ListNotes;
-    //private Context context;
+    private List<CardMyNotes> ListNotes;
     private OnItemClickListener listener;
     private delNotes delListener;
 
     private int position;
+
+    // конструктор класса
+    public ListNotesAdapter(LayoutInflater layoutInflater, List<CardMyNotes> ListNotes) {
+        //this.inflater = LayoutInflater.from(context);
+        this.inflater = layoutInflater;
+        this.ListNotes = ListNotes;
+    }
 
     // сеттер и геттер для position
     public int getPosition() {
@@ -51,12 +55,6 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
         this.delListener = delListener;
     }
 
-    // конструкто класса
-    public ListNotesAdapter(Context context, List<Card_MyNotes> ListNotes) {
-        this.inflater = LayoutInflater.from(context);
-        this.ListNotes = ListNotes;
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -68,7 +66,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // привязка холдера и заметки по определенной позиции
-        Card_MyNotes myNotes = ListNotes.get(position);
+        CardMyNotes myNotes = ListNotes.get(position);
         holder.textView_notes.setText(myNotes.getName());
     }
 

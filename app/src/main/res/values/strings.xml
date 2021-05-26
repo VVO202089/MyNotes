@@ -15,4 +15,8 @@
     <string name="Open">Открыть</string>
     <string name="Del">Удалить</string>
     <string name="SaveNotes">Сохранить</string>
+    <string name="SaveButton">Сохранить</string>
+    <string name="my_notes">My notes</string>
+    <string name="NotesName">Название заметки</string>
+    <string name="nameMyNotes">Name</string>
 </resources>

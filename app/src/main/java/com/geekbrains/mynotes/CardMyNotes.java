@@ -6,12 +6,12 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Card_MyNotes implements Serializable {
-    private String Name;
-    private String Description;
-    private String DateCreate;
+public class CardMyNotes implements Serializable {
+    private final String Name;
+    private final String Description;
+    private final String DateCreate;
 
-    public Card_MyNotes(String name, String description, String dateCreate) {
+    public CardMyNotes(String name, String description, String dateCreate) {
         Name = name;
         Description = description;
         DateCreate = dateCreate;

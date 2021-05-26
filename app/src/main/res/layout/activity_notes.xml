@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Название заметки" />
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Дата заметки" />
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/editTextDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="Описание заметки" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/editDescNotes"
         android:layout_width="match_parent"
         android:layout_height="268dp"
