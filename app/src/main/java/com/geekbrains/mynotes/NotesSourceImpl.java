@@ -2,30 +2,26 @@ package com.geekbrains.mynotes;
 
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotesSourceImpl implements CardMyNotesSource {
-    @Override
-    public void addCardNotes(CardMyNotes cardNotes) {
 
-    }
-
-    /*private List<CardMyNotes>dataSource;
+    private List<CardMyNotes>dataSource;
 
     public NotesSourceImpl(List<CardMyNotes> dataSource) {
-        this.dataSource = dataSource;
+        this.dataSource = new ArrayList<>(3);
     }
 
-    public  NotesSourceImpl init(){
-        // для теста
-        CardMyNotes myNotes1 = new CardMyNotes("Notes1", "Тестовая первая заметка", "01.01.2021");
-        CardMyNotes myNotes2 = new CardMyNotes("Notes2", "Тестовая вторая заметка", "02.01.2021");
-        CardMyNotes myNotes3 = new CardMyNotes("Notes3", "Тестовая третья заметка", "03.01.2021");
-        dataSource.add(myNotes1);
-        dataSource.add(myNotes2);
-        dataSource.add(myNotes3);
+    public NotesSourceImpl init()
+    {
+        // пока тестовые данные
+        dataSource.add(new CardMyNotes("Notes1", "Тестовая первая заметка", "01.01.2021"));
+        dataSource.add(new CardMyNotes("Notes2", "Тестовая вторая заметка", "02.01.2021"));
+        dataSource.add(new CardMyNotes("Notes3", "Тестовая третья заметка", "03.01.2021"));
 
         return this;
+
     }
 
     @Override
@@ -61,5 +57,5 @@ public class NotesSourceImpl implements CardMyNotesSource {
     @Override
     public void onItemClick(View view, int position) {
 
-    }*/
+    }
 }

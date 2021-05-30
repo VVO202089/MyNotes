@@ -40,6 +40,42 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
         this.position = position;
     }
 
+    /*@Override
+    public CardMyNotes getCardNotes(int position) {
+        return null;
+    }
+
+    @Override
+    public int size() {
+        return ListNotes.size();
+    }
+
+    @Override
+    public void deleteCardNotes(int position) {
+        ListNotes.remove(position);
+    }
+
+    @Override
+    public void updateCardNotes(int position, CardMyNotes cardNotes) {
+        // тут остается вопрос
+        ListNotes.set(position,cardNotes);
+    }
+
+    @Override
+    public void addCardNotes(CardMyNotes cardNotes) {
+        ListNotes.add(cardNotes);
+    }
+
+    @Override
+    public void clearCardNotes() {
+        ListNotes.clear();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }*/
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }

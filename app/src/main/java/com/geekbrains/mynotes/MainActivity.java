@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements CardMyNotesSource {
+public class MainActivity extends AppCompatActivity {
 
     private CardMyNotes myNotes;
     private ListNotesAdapter adapter;
     private ArrayList<CardMyNotes> arrayNotes = new ArrayList<CardMyNotes>();
+    private final String RezKey = "RezKey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,18 +33,26 @@ public class MainActivity extends AppCompatActivity implements CardMyNotesSource
         //    arrayNotes.add((CardMyNotes) arguments.getSerializable(CardMyNotes.class.getSimpleName()));
         //}
         setContentView(R.layout.activity_main);
+        //if (savedInstanceState == null) {
         addFragmentList();
+       // }
         initView();
         //initRecyclerView();
         //initToolbar();
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        //super.onSaveInstanceState(outState, outPersistentState);
+       // outState.put
+    }
+
+    @Override
     public void onBackPressed() {
 
-        if(getSupportFragmentManager().getBackStackEntryCount() > 1){
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
             getSupportFragmentManager().popBackStack();
-        }else{
+        } else {
             super.onBackPressed();
         }
 
@@ -138,12 +148,8 @@ public class MainActivity extends AppCompatActivity implements CardMyNotesSource
     private void addFragmentList() {
         // заменяем fragment_notes_insert на наш фрагмент
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_list_insert,new FragmentList())
+                .add(R.id.fragment_list_insert, new FragmentList())
                 .commit();
     }
 
-    @Override
-    public void addCardNotes(CardMyNotes cardNotes) {
-        arrayNotes.add(cardNotes);
-    }
 }

@@ -61,7 +61,8 @@ public class FragmentNotes extends Fragment {
                     DescNotes.getText().toString(),
                     DataNotes.getText().toString());
             if(myNotes != null){
-                //getActivity().
+                // передача данных в фрагмент FragmentList
+
             }
             closeFragment();
         });
@@ -78,6 +79,16 @@ public class FragmentNotes extends Fragment {
         getFragmentManager().beginTransaction()
                 .remove(this)
                 .setTransition( getFragmentManager().beginTransaction().TRANSIT_FRAGMENT_CLOSE)
+                .commit();
+    }
+
+    private void addNotesFragment(CardMyNotes myNotes) {
+        Bundle arguments = new Bundle();
+        arguments.putSerializable(CardMyNotes.class.getSimpleName(),myNotes);
+        FragmentNotes notesFragment = new FragmentNotes();
+        notesFragment.setArguments(arguments);
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.fragment_list_insert,notesFragment)
                 .commit();
     }
 
