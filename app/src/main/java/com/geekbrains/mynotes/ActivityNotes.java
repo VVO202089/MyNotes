@@ -1,29 +1,23 @@
 package com.geekbrains.mynotes;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentHostCallback;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.io.Serializable;
-import java.sql.Date;
 
 public class ActivityNotes extends AppCompatActivity {
 
     private final static String keyNotes = "Notes";
-    private MyNotes myNotes;
+    private CardMyNotes myNotes;
 
+    private boolean checkAdd;
     private EditText editTextTextPersonName;
     private EditText editTextDate;
     private EditText editDescNotes;
+    private Button saveOrAddNotesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +35,16 @@ public class ActivityNotes extends AppCompatActivity {
     private void fillingData() {
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
-            myNotes = (MyNotes) arguments.getSerializable(ActivityNotes.class.getSimpleName());
+            myNotes = (CardMyNotes) arguments.getSerializable(CardMyNotes.class.getSimpleName());
             if (myNotes != null) {
                 editTextTextPersonName.setText(myNotes.getName());
                 editTextDate.setText(myNotes.getDateCreate());
                 editDescNotes.setText(myNotes.getDescription());
+                saveOrAddNotesButton.setText("Сохранить");
             }
+        } else {
+            checkAdd = true;
+            saveOrAddNotesButton.setText("Добавить заметку");
         }
     }
 
@@ -54,26 +52,23 @@ public class ActivityNotes extends AppCompatActivity {
         editTextTextPersonName = findViewById(R.id.editTextTextPersonName);
         editTextDate = findViewById(R.id.editTextDate);
         editDescNotes = findViewById(R.id.editDescNotes);
-        Button addNotes = findViewById(R.id.addNotes);
-        // при нажатии на кнопку - добавляем заметку
-        addNotes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyNotes myNotes = new MyNotes(
+        saveOrAddNotesButton = findViewById(R.id.SaveNotes);
+        //Button saveOrAddNotesButton = findViewById(R.id.SaveNotes);
+        // при нажатии на кнопку - или добавляем заметку или сохраняем изменения
+        saveOrAddNotesButton.setOnClickListener(v -> {
+            if (checkAdd) {
+                CardMyNotes myNotes = new CardMyNotes(
                         String.valueOf(editTextTextPersonName.getText()),
                         String.valueOf(editDescNotes.getText()),
                         String.valueOf(String.valueOf(editTextDate.getText())));
                 goToMain(myNotes);
+            } else {
+
             }
         });
         Button goListNotes = findViewById(R.id.goListNotes);
         // при нажатии на кнопку возврат к списку заметок
-        goListNotes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToListNotes();
-            }
-        });
+        goListNotes.setOnClickListener(v -> goToListNotes());
 
     }
 
@@ -81,9 +76,10 @@ public class ActivityNotes extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-    private void goToMain(MyNotes myNotes) {
+
+    private void goToMain(CardMyNotes myNotes) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MyNotes.class.getSimpleName(), myNotes);
+        intent.putExtra(CardMyNotes.class.getSimpleName(), myNotes);
         startActivity(intent);
     }
 
