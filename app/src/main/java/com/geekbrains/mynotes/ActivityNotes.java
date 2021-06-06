@@ -11,7 +11,7 @@ import android.widget.EditText;
 public class ActivityNotes extends AppCompatActivity {
 
     private final static String keyNotes = "Notes";
-    private Card_MyNotes myNotes;
+    private CardMyNotes myNotes;
 
     private boolean checkAdd;
     private EditText editTextTextPersonName;
@@ -35,7 +35,7 @@ public class ActivityNotes extends AppCompatActivity {
     private void fillingData() {
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
-            myNotes = (Card_MyNotes) arguments.getSerializable(Card_MyNotes.class.getSimpleName());
+            myNotes = (CardMyNotes) arguments.getSerializable(CardMyNotes.class.getSimpleName());
             if (myNotes != null) {
                 editTextTextPersonName.setText(myNotes.getName());
                 editTextDate.setText(myNotes.getDateCreate());
@@ -57,7 +57,7 @@ public class ActivityNotes extends AppCompatActivity {
         // при нажатии на кнопку - или добавляем заметку или сохраняем изменения
         saveOrAddNotesButton.setOnClickListener(v -> {
             if (checkAdd) {
-                Card_MyNotes myNotes = new Card_MyNotes(
+                CardMyNotes myNotes = new CardMyNotes(
                         String.valueOf(editTextTextPersonName.getText()),
                         String.valueOf(editDescNotes.getText()),
                         String.valueOf(String.valueOf(editTextDate.getText())));
@@ -77,9 +77,9 @@ public class ActivityNotes extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToMain(Card_MyNotes myNotes) {
+    private void goToMain(CardMyNotes myNotes) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Card_MyNotes.class.getSimpleName(), myNotes);
+        intent.putExtra(CardMyNotes.class.getSimpleName(), myNotes);
         startActivity(intent);
     }
 

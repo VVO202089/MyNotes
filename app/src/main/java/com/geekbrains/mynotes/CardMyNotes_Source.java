@@ -1,10 +1,10 @@
 package com.geekbrains.mynotes;
 
 public interface CardMyNotes_Source {
-    Card_MyNotes getCardNotes(int position);
+    CardMyNotes getCardNotes(int position);
     int size();
     void deleteCardNotes(int position);
-    void updateCardNotes(int position, Card_MyNotes cardNotes);
-    void addCardNotes(Card_MyNotes cardNotes);
+    void updateCardNotes(int position, CardMyNotes cardNotes);
+    void addCardNotes(CardMyNotes cardNotes);
     void clearCardNotes();
 }

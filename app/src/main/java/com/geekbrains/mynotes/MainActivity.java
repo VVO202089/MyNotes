@@ -2,45 +2,40 @@ package com.geekbrains.mynotes;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Card_MyNotes myNotes;
+    private CardMyNotes myNotes;
     private ListNotesAdapter adapter;
-    private ArrayList<Card_MyNotes> arrayNotes = new ArrayList<Card_MyNotes>();
+    private ArrayList<CardMyNotes> arrayNotes = new ArrayList<CardMyNotes>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
-            arrayNotes.add((Card_MyNotes) arguments.getSerializable(Card_MyNotes.class.getSimpleName()));
+            arrayNotes.add((CardMyNotes) arguments.getSerializable(CardMyNotes.class.getSimpleName()));
         }
         setContentView(R.layout.activity_main);
-        initView();
-        initRecyclerView();
+        Fragment fragmentList = new FragmentList();
+        addFragment(fragmentList);
+        //initView();
+        // initRecyclerView();
         initToolbar();
     }
 
-    private void initRecyclerView() {
+    /*private void initRecyclerView() {
         // для теста
         /*Card_MyNotes myNotes1 = new Card_MyNotes("Notes1", "Тестовая первая заметка", "01.01.2021");
         Card_MyNotes myNotes2 = new Card_MyNotes("Notes2", "Тестовая вторая заметка", "02.01.2021");
@@ -48,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         // добавим их в массив
         arrayNotes.add(myNotes1);
         arrayNotes.add(myNotes2);
-        arrayNotes.add(myNotes3);*/
+        arrayNotes.add(myNotes3);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_notes_line);
         adapter = new ListNotesAdapter(this, arrayNotes);
@@ -73,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_drawer, menu);
-
         return true;
     }
 
@@ -94,20 +88,40 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void initView() {
-        initToolbar();
-    }
+    }*/
 
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
-    public ArrayList<Card_MyNotes> getArrayNotes() {
-        return arrayNotes;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // проверяем, что нажато и делаем соответствующее действие
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+
+                break;
+            case R.id.menu_clear:
+                arrayNotes.clear();
+                adapter.notifyDataSetChanged();
+                break;
+            default:
+                System.out.println("true");
+                break;
+        }
+        return true;
+    }
+
+    /*public ArrayList<Card_MyNotes> getArrayNotes() {
+        return arrayNotes;
+    }*/
 
     private void addFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
@@ -119,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         // Открыть транзакцию
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_List, fragment);
+        fragmentTransaction.replace(R.id.fragment_list_insert, fragment);
         fragmentTransaction.addToBackStack(null);
         // Закрыть транзакцию
         fragmentTransaction.commit();

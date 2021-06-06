@@ -1,7 +1,6 @@
 package com.geekbrains.mynotes;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,7 +11,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -20,7 +18,7 @@ import java.util.List;
 public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private List<Card_MyNotes> ListNotes;
+    private List<CardMyNotes> ListNotes;
     //private Context context;
     private OnItemClickListener listener;
     private delNotes delListener;
@@ -52,7 +50,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
     }
 
     // конструкто класса
-    public ListNotesAdapter(Context context, List<Card_MyNotes> ListNotes) {
+    public ListNotesAdapter(Context context, List<CardMyNotes> ListNotes) {
         this.inflater = LayoutInflater.from(context);
         this.ListNotes = ListNotes;
     }
@@ -68,7 +66,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // привязка холдера и заметки по определенной позиции
-        Card_MyNotes myNotes = ListNotes.get(position);
+        CardMyNotes myNotes = ListNotes.get(position);
         holder.textView_notes.setText(myNotes.getName());
     }
 
