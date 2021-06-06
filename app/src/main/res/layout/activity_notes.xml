@@ -23,6 +23,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name" />
+
     <TextView
         android:id="@+id/DateNotes"
         android:layout_width="match_parent"
@@ -49,10 +50,10 @@
         android:inputType="textMultiLine" />
 
     <Button
-        android:id="@+id/addNotes"
+        android:id="@+id/SaveNotes"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Добавить заметку" />
+        android:text="@string/SaveNotes" />
 
     <Button
         android:id="@+id/goListNotes"

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_height="match_parent" android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView"
@@ -9,13 +10,14 @@
         android:layout_height="wrap_content"
         android:text="My notes"
         android:textSize="24sp"
-        android:textStyle="italic"/>
+        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/labelNotesName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Название заметки" />
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="match_parent"
@@ -23,17 +25,20 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name" />
+
     <TextView
         android:id="@+id/DateNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Дата заметки" />
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editTextDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="date" />
+
     <TextView
         android:id="@+id/labelDescNotes"
         android:layout_width="match_parent"
@@ -49,10 +54,10 @@
         android:inputType="textMultiLine" />
 
     <Button
-        android:id="@+id/addNotes"
+        android:id="@+id/SaveNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Добавить заметку" />
+        android:text="Сохранить" />
 
     <Button
         android:id="@+id/goListNotes"
