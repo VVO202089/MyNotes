@@ -1,40 +1,74 @@
 package com.geekbrains.mynotes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
+import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MyNotes myNotes;
-    private ArrayList<MyNotes> arrayNotes = new ArrayList<>();
+    private CardMyNotes myNotes;
+    private ListNotesAdapter adapter;
+    private ArrayList<CardMyNotes> arrayNotes = new ArrayList<CardMyNotes>();
+    private int orientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
-            arrayNotes.add((MyNotes) arguments.getSerializable(MyNotes.class.getSimpleName()));
+            arrayNotes.add((CardMyNotes) arguments.getSerializable(CardMyNotes.class.getSimpleName()));
         }
-        Fragment fragment = new Fragment();
-        addFragment(fragment);
         setContentView(R.layout.activity_main);
-        //initElements();
+        orientation = getResources().getConfiguration().orientation;
+
+        addFragmentList();
+
+        initToolbar();
     }
 
-    public ArrayList<MyNotes> getArrayNotes() {
-        return arrayNotes;
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
-    private void addFragment(Fragment fragment) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_drawer, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // проверяем, что нажато и делаем соответствующее действие
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+                addFragmentNotes();
+                break;
+            case R.id.menu_clear:
+                arrayNotes.clear();
+                adapter.notifyDataSetChanged();
+                break;
+            default:
+                System.out.println("true");
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void addFragmentList() {
+        Fragment fragment = new FragmentList();
         Bundle bundle = new Bundle();
         if (arrayNotes != null) {
             bundle.putSerializable("arrayNotes", arrayNotes);
@@ -44,9 +78,22 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         // Открыть транзакцию
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_List, fragment);
+        fragmentTransaction.replace(R.id.fragment_list_insert, fragment);
         fragmentTransaction.addToBackStack(null);
         // Закрыть транзакцию
         fragmentTransaction.commit();
     }
+
+    private void addFragmentNotes() {
+        Fragment fragment = new FragmentNotes();
+        //Получить менеджер фрагментов
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // Открыть транзакцию
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_notes_insert, fragment);
+        fragmentTransaction.addToBackStack(null);
+        // Закрыть транзакцию
+        fragmentTransaction.commit();
+    }
+
 }
