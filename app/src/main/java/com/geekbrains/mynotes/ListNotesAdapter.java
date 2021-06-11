@@ -1,6 +1,8 @@
 package com.geekbrains.mynotes;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,17 +13,19 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.ViewHolder> {
+public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.ViewHolder> implements CardMyNotesSource {
 
     private LayoutInflater inflater;
     private List<CardMyNotes> ListNotes;
-    //private Context context;
-    private OnItemClickListener listener;
-    private delNotes delListener;
+    private CardMyNotesSource dataSource;
+    private int orientation;
 
     private int position;
 
@@ -34,25 +38,55 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
         this.position = position;
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-    }
-    public interface delNotes{
-        void del(View view, int position);
+    @Override
+    public CardMyNotes getCardNotes(int position) {
+        return ListNotes.get(position);
     }
 
-    public void setListener(OnItemClickListener listener) {
-        this.listener = listener;
+    @Override
+    public int size() {
+        return ListNotes.size();
     }
 
-    public void setdelListener(delNotes delListener) {
-        this.delListener = delListener;
+    @Override
+    public void openCard(int position) {
+        // откроем фрагмент с заполненными данными
+        if (orientation == Configuration.ORIENTATION_PORTRAIT){
+            openFragmentNotes(position);
+        }
     }
+
+    @Override
+    public void deleteCardNotes(int position) {
+        ListNotes.remove(position);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateCardNotes(int position, CardMyNotes cardNotes) {
+
+    }
+
+    @Override
+    public void addCardNotes(CardMyNotes cardNotes) {
+        ListNotes.add(cardNotes);
+    }
+
+    @Override
+    public void clearCardNotes() {
+        ListNotes.clear();
+    }
+
+    //@Override
+    //public void initialized(CardMyNotes myNotes) {
+//
+   // }
 
     // конструкто класса
-    public ListNotesAdapter(Context context, List<CardMyNotes> ListNotes) {
+    public ListNotesAdapter(Context context, List<CardMyNotes> ListNotes,int orientation) {
         this.inflater = LayoutInflater.from(context);
         this.ListNotes = ListNotes;
+        this.orientation = orientation;
     }
 
     @NonNull
@@ -75,6 +109,18 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
         return ListNotes.size();
     }
 
+    private void openFragmentNotes(int position) {
+        Fragment frNotes = new FragmentNotes();
+        Bundle arguments = new Bundle();
+        arguments.putSerializable(CardMyNotes.class.getSimpleName(),ListNotes.get(position));
+        frNotes.setArguments(arguments);
+        FragmentManager fragmentManager = ((AppCompatActivity)inflater.getContext()).getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_notes_insert,frNotes)
+                .addToBackStack(null)
+                .commit();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         TextView textView_notes;
 
@@ -83,7 +129,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
             view.setOnCreateContextMenuListener(this);
             textView_notes = (TextView) view.findViewById(R.id.textView_notes_list);
             textView_notes.setOnClickListener(v -> {
-                if (listener != null) {
+                //if (listener != null) {
                     // инициализируем меню
                     PopupMenu menu = new PopupMenu(v.getContext(), view);
                     menu.inflate(R.menu.cards_menu);
@@ -96,11 +142,11 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
                     menu.setOnMenuItemClickListener(item -> {
                         switch (item.getItemId()) {
                             case R.id.action_del:
-                                delListener.del(v,getAdapterPosition());
+                               deleteCardNotes(getAdapterPosition());
                                 break;
-                                //ListNotes.remove(ListNotes.get(position));
                             case R.id.action_open:
-                                listener.onItemClick(v, getAdapterPosition());
+                                // откроем карточку заметки
+                                openCard(getAdapterPosition());
                                 break;
                             default:
                                 System.out.println("default");
@@ -108,7 +154,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
                         return false;
                     });
                     menu.show();
-                }
+                //}
             });
         }
 

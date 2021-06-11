@@ -1,0 +1,23 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
+
+    <fragment
+        android:id="@+id/fragment_list_insert"
+        android:name="com.geekbrains.mynotes.FragmentList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_list" />
+
+    <fragment
+        android:id="@+id/fragment_notes_insert"
+        android:name="com.geekbrains.mynotes.FragmentNotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_notes" />
+</LinearLayout>

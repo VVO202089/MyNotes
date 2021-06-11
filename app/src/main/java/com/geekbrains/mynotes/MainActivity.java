@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private CardMyNotes myNotes;
     private ListNotesAdapter adapter;
     private ArrayList<CardMyNotes> arrayNotes = new ArrayList<CardMyNotes>();
+    private int orientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,47 +31,22 @@ public class MainActivity extends AppCompatActivity {
             arrayNotes.add((CardMyNotes) arguments.getSerializable(CardMyNotes.class.getSimpleName()));
         }
         setContentView(R.layout.activity_main);
-        Fragment fragmentList = new FragmentList();
-        addFragment(fragmentList);
-        //initView();
-        // initRecyclerView();
+        orientation = getResources().getConfiguration().orientation;
+
+        addFragmentList();
+
         initToolbar();
     }
 
-    /*private void initRecyclerView() {
-        // для теста
-        /*Card_MyNotes myNotes1 = new Card_MyNotes("Notes1", "Тестовая первая заметка", "01.01.2021");
-        Card_MyNotes myNotes2 = new Card_MyNotes("Notes2", "Тестовая вторая заметка", "02.01.2021");
-        Card_MyNotes myNotes3 = new Card_MyNotes("Notes3", "Тестовая третья заметка", "03.01.2021");
-        // добавим их в массив
-        arrayNotes.add(myNotes1);
-        arrayNotes.add(myNotes2);
-        arrayNotes.add(myNotes3);
-
-        RecyclerView recyclerView = findViewById(R.id.recycler_notes_line);
-        adapter = new ListNotesAdapter(this, arrayNotes);
-        recyclerView.setAdapter(adapter);
-        adapter.setListener((view, position) -> {
-            if (arrayNotes.get(position) != null) {
-                Intent intent = new Intent(getBaseContext(), ActivityNotes.class);
-                intent.putExtra(Card_MyNotes.class.getSimpleName(), arrayNotes.get(position));
-                startActivity(intent);
-            }
-        });
-        adapter.setdelListener(new ListNotesAdapter.delNotes() {
-            @Override
-            public void del(View view, int position) {
-                arrayNotes.remove(arrayNotes.get(position));
-                adapter.notifyDataSetChanged();
-            }
-        });
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_drawer, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -76,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
         // проверяем, что нажато и делаем соответствующее действие
         switch (item.getItemId()) {
             case R.id.menu_add:
-                Intent intent = new Intent(getBaseContext(), ActivityNotes.class);
-                startActivity(intent);
+                addFragmentNotes();
                 break;
             case R.id.menu_clear:
                 arrayNotes.clear();
@@ -88,42 +65,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }*/
-
-    private void initToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // проверяем, что нажато и делаем соответствующее действие
-        switch (item.getItemId()) {
-            case R.id.menu_add:
-
-                break;
-            case R.id.menu_clear:
-                arrayNotes.clear();
-                adapter.notifyDataSetChanged();
-                break;
-            default:
-                System.out.println("true");
-                break;
-        }
-        return true;
-    }
-
-    /*public ArrayList<Card_MyNotes> getArrayNotes() {
-        return arrayNotes;
-    }*/
-
-    private void addFragment(Fragment fragment) {
+    private void addFragmentList() {
+        Fragment fragment = new FragmentList();
         Bundle bundle = new Bundle();
         if (arrayNotes != null) {
             bundle.putSerializable("arrayNotes", arrayNotes);
@@ -134,6 +79,18 @@ public class MainActivity extends AppCompatActivity {
         // Открыть транзакцию
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_list_insert, fragment);
+        fragmentTransaction.addToBackStack(null);
+        // Закрыть транзакцию
+        fragmentTransaction.commit();
+    }
+
+    private void addFragmentNotes() {
+        Fragment fragment = new FragmentNotes();
+        //Получить менеджер фрагментов
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // Открыть транзакцию
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_notes_insert, fragment);
         fragmentTransaction.addToBackStack(null);
         // Закрыть транзакцию
         fragmentTransaction.commit();

@@ -1,6 +1,5 @@
 package com.geekbrains.mynotes;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,32 +9,38 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class FragmentList extends Fragment {
+public class FragmentList extends Fragment implements CardMyNotesFireBaseSource{
 
     private CardMyNotes myNotes;
-    private ListNotesAdapter adapter;
+    private CardMyNotesSource adapter;
     private ArrayList<CardMyNotes> arrayNotes = new ArrayList<CardMyNotes>();
     private FragmentActivity myContext;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list,container,false);
+        return inflater.inflate(R.layout.fragment_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            if ((ArrayList) bundle.get(CardMyNotes.class.getSimpleName()) != null) {
+                arrayNotes = (ArrayList) bundle.get(CardMyNotes.class.getSimpleName());
+            }
+        }
         initRecyclerView(view);
+        initOtherElements();
     }
 
     private void initRecyclerView(View v) {
@@ -49,30 +54,34 @@ public class FragmentList extends Fragment {
         arrayNotes.add(myNotes3);
 
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_notes_line);
-        adapter = new ListNotesAdapter(getContext(), arrayNotes);
-        recyclerView.setAdapter(adapter);
-        adapter.setListener((view, position) -> {
-            if (arrayNotes.get(position) != null) {
-                openFragmentNotes(position);
-            }
-        });
-        adapter.setdelListener(new ListNotesAdapter.delNotes() {
+        adapter = new ListNotesAdapter(getContext(), arrayNotes,getActivity().getResources().getConfiguration().orientation);
+
+        recyclerView.setAdapter((ListNotesAdapter) adapter);
+
+    }
+
+    private void initOtherElements() {
+
+        /*myNotes = new CardMyNotesFirebase().initFireBase(new CardMyNotesResponse() {
             @Override
-            public void del(View view, int position) {
-                arrayNotes.remove(arrayNotes.get(position));
-                adapter.notifyDataSetChanged();
+            public void initialized(CardMyNotesFireBaseSource myNotes) {
+                // тут пока не понятно
+                //adapter.notifyDataSetChanged();
             }
-        });
+        });*/
+        // тут пока не понятно
+        //adapter.setDataSource(myNotes);
+
     }
 
     private void openFragmentNotes(int position) {
         Fragment frNotes = new FragmentNotes();
         Bundle arguments = new Bundle();
-        arguments.putSerializable(CardMyNotes.class.getSimpleName(),arrayNotes.get(position));
+        arguments.putSerializable(CardMyNotes.class.getSimpleName(), arrayNotes.get(position));
         frNotes.setArguments(arguments);
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_notes_insert,frNotes)
+                .replace(R.id.fragment_list_insert, frNotes)
                 .addToBackStack(null)
                 .commit();
     }
@@ -82,4 +91,10 @@ public class FragmentList extends Fragment {
         inflater.inflate(R.menu.menu_drawer, menu);
     }
 
+    @Override
+    public void initFireBase(CardMyNotesResponse myNotesResponse) {
+        if (myNotesResponse != null){
+            myNotesResponse.initialized(this);
+        }
+    }
 }
