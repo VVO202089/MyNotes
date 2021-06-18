@@ -4,20 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        android:layout_height="wrap_content" />
     <fragment
-        android:id="@+id/fragment_list_insert"
+        android:id="@+id/fragment_list_insert_land"
         android:name="com.geekbrains.mynotes.FragmentList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list_land" />
 
-    <fragment
-        android:id="@+id/fragment_notes_insert"
-        android:name="com.geekbrains.mynotes.FragmentNotes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_notes" />
 </LinearLayout>

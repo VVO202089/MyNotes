@@ -26,15 +26,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle arguments = getIntent().getExtras();
+        // уже не нужно, так как данные хранятся в FireBase
+        /*Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
             arrayNotes.add((CardMyNotes) arguments.getSerializable(CardMyNotes.class.getSimpleName()));
-        }
+        }*/
         setContentView(R.layout.activity_main);
         orientation = getResources().getConfiguration().orientation;
-
         addFragmentList();
-
         initToolbar();
     }
 
@@ -69,16 +68,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void addFragmentList() {
         Fragment fragment = new FragmentList();
-        Bundle bundle = new Bundle();
+        // уже не нужно, так как данные хранятся в Firebase
+        /*Bundle bundle = new Bundle();
         if (arrayNotes != null) {
             bundle.putSerializable("arrayNotes", arrayNotes);
         }
-        fragment.setArguments(bundle);
+        fragment.setArguments(bundle);*/
         //Получить менеджер фрагментов
         FragmentManager fragmentManager = getSupportFragmentManager();
         // Открыть транзакцию
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_list_insert, fragment);
+        fragmentTransaction.replace(R.id.fragment_list_insert,fragment);
+        //fragmentTransaction.replace((orientation == Configuration.ORIENTATION_PORTRAIT)
+        //       ?R.id.fragment_notes_insert :R.id.fragment_list_insert_land, fragment);
         fragmentTransaction.addToBackStack(null);
         // Закрыть транзакцию
         fragmentTransaction.commit();

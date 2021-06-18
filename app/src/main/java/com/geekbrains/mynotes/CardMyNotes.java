@@ -2,20 +2,36 @@ package com.geekbrains.mynotes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.telephony.mbms.StreamingServiceInfo;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class CardMyNotes implements Serializable {
     private String id;          // идентификатор
-    private String Name;        // имя заметки
-    private String Description; // описание
-    private String DateCreate;  // дата создания
+    private String name;        // имя заметки
+    private String description; // описание
+    private String dateCreate;  // дата создания
 
-    public CardMyNotes(String name, String description, String dateCreate) {
-        Name = name;
-        Description = description;
-        DateCreate = dateCreate;
+    public CardMyNotes() {}
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDateCreate(String dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public CardMyNotes(String id, String name, String description, String dateCreate) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.dateCreate = dateCreate;
     }
 
     public String getId() {
@@ -27,15 +43,15 @@ public class CardMyNotes implements Serializable {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public String getDateCreate() {
-        return DateCreate;
+        return dateCreate;
     }
 
 }

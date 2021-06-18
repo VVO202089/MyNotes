@@ -18,12 +18,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.ViewHolder> implements CardMyNotesSource {
 
     private LayoutInflater inflater;
-    private List<CardMyNotes> ListNotes;
+    private ArrayList<CardMyNotes> ListNotes;
     private CardMyNotesSource dataSource;
     private int orientation;
 
@@ -51,9 +52,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
     @Override
     public void openCard(int position) {
         // откроем фрагмент с заполненными данными
-        if (orientation == Configuration.ORIENTATION_PORTRAIT){
-            openFragmentNotes(position);
-        }
+        openFragmentNotes(position);
     }
 
     @Override
@@ -62,9 +61,13 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
         notifyDataSetChanged();
     }
 
-    @Override
-    public void updateCardNotes(int position, CardMyNotes cardNotes) {
-
+    public void updateCardNotes(ArrayList<CardMyNotes> listNotesFireBase) {
+        ListNotes.clear();
+        // по - другому хз как
+        for (CardMyNotes notes:listNotesFireBase) {
+            ListNotes.add(notes);
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -83,7 +86,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
    // }
 
     // конструкто класса
-    public ListNotesAdapter(Context context, List<CardMyNotes> ListNotes,int orientation) {
+    public ListNotesAdapter(Context context, ArrayList<CardMyNotes> ListNotes,int orientation) {
         this.inflater = LayoutInflater.from(context);
         this.ListNotes = ListNotes;
         this.orientation = orientation;
@@ -110,13 +113,14 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
     }
 
     private void openFragmentNotes(int position) {
+
         Fragment frNotes = new FragmentNotes();
         Bundle arguments = new Bundle();
         arguments.putSerializable(CardMyNotes.class.getSimpleName(),ListNotes.get(position));
         frNotes.setArguments(arguments);
         FragmentManager fragmentManager = ((AppCompatActivity)inflater.getContext()).getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_notes_insert,frNotes)
+                .replace(R.id.fragment_list_insert,frNotes)
                 .addToBackStack(null)
                 .commit();
     }
