@@ -13,9 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,7 +25,6 @@ public class FragmentNotes extends Fragment {
     private EditText editDescNotes;
     private Button saveButton;
     private Button goListNotesButton;
-    private DatabaseReference mDataBase;
     private String NOTES_KEY = "NOTES";
     private final String BASE_URL = "https://mynotes-d6047-default-rtdb.firebaseio.com/";
 
@@ -52,7 +48,7 @@ public class FragmentNotes extends Fragment {
 
     private void initElements(View v) {
         // инициализируем mDataBase
-        mDataBase = FirebaseDatabase.getInstance(BASE_URL).getReference(NOTES_KEY);
+        //mDataBase = FirebaseDatabase.getInstance(BASE_URL).getReference(NOTES_KEY);
         // инициализируем EditText
         editTextTextPersonName = (EditText) v.findViewById(R.id.editTextTextPersonName);
         editTextDate = (EditText) v.findViewById(R.id.editTextDate);
@@ -63,8 +59,8 @@ public class FragmentNotes extends Fragment {
         // если передали параметр, то заполним данные
         if (myNotes != null) {
             CardMyNotes answer;
-            answer = new CardMyNotes(myNotes.getId(),String.valueOf(editTextTextPersonName.getText())
-                    ,String.valueOf(editDescNotes.getText()),String.valueOf(editTextDate.getText()));
+            //answer = new CardMyNotes(myNotes.getId(),String.valueOf(editTextTextPersonName.getText())
+            //        ,String.valueOf(editDescNotes.getText()),String.valueOf(editTextDate.getText()));
         }
         if (myNotes != null) {
             editTextTextPersonName.setText(myNotes.getName());
@@ -76,10 +72,10 @@ public class FragmentNotes extends Fragment {
             // если карточка новая, тогда добавляем в список
             if (myNotes == null) {
                 Random random = new Random();
-                myNotes = new CardMyNotes(String.valueOf(random.nextInt(100000000))
-                        ,String.valueOf(editTextTextPersonName.getText())
-                        , String.valueOf(editTextDate.getText())
-                        , String.valueOf(editDescNotes.getText()));
+                //myNotes = new CardMyNotes(String.valueOf(random.nextInt(100000000))
+               //         ,String.valueOf(editTextTextPersonName.getText())
+                //        , String.valueOf(editTextDate.getText())
+                 //       , String.valueOf(editDescNotes.getText()));
                 // добавляем экемпляр класса в список (не требуется)
                 //arrayNotes.add(myNotes);
                 // после этого добавляем заметку в базу данных
@@ -104,7 +100,7 @@ public class FragmentNotes extends Fragment {
     }
 
     private void addFireBase() {
-        mDataBase.push().setValue(myNotes);
+       // mDataBase.push().setValue(myNotes);
     }
 
     /*private void addFragmentList() {

@@ -15,6 +15,13 @@ public class CardMyNotes implements Serializable {
 
     public CardMyNotes() {}
 
+    protected CardMyNotes(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        description = in.readString();
+        dateCreate = in.readString();
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -27,8 +34,7 @@ public class CardMyNotes implements Serializable {
         this.dateCreate = dateCreate;
     }
 
-    public CardMyNotes(String id, String name, String description, String dateCreate) {
-        this.id = id;
+    public CardMyNotes(String name, String description, String dateCreate) {
         this.name = name;
         this.description = description;
         this.dateCreate = dateCreate;

@@ -15,13 +15,18 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class FragmentList extends Fragment {
 
@@ -29,9 +34,13 @@ public class FragmentList extends Fragment {
     private CardMyNotesSource adapter;
     private ArrayList<CardMyNotes> arrayNotes = new ArrayList<CardMyNotes>();
     private FragmentActivity myContext;
-    private DatabaseReference mDataBase;
     private String NOTES_KEY = "NOTES";
     private final String BASE_URL = "https://mynotes-d6047-default-rtdb.firebaseio.com/";
+    private static final String NOTES_COLLECTION = "NOTES";
+    // база данных FireStore
+    private FirebaseFirestore store = FirebaseFirestore.getInstance();
+    // коллекция документов
+    private CollectionReference collection = store.collection(NOTES_COLLECTION);
 
     @Nullable
     @Override
@@ -54,49 +63,49 @@ public class FragmentList extends Fragment {
     }
 
     private void initRecyclerView(View v) {
-        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_notes_line);
+        // очищаем массив заметок
         arrayNotes.clear();
-        // инициализируем mDataBase
-        mDataBase = FirebaseDatabase.getInstance(BASE_URL).getReference();
-        // читаем данные из FireStore и заполняем arrayList
-        ValueEventListener eventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        Task<QuerySnapshot> task = collection.orderBy(CardMyNotesMapping.Fields.DATE_CREATE, Query.Direction.DESCENDING).get();
 
-                // очищаем перед загрузкой
-                if (arrayNotes.size() > 0) {
-                    arrayNotes.clear();
+        if (task.isSuccessful()) {
+            for (QueryDocumentSnapshot document : task.getResult()) {
+                Map<String, Object> doc = document.getData();
+                String id = document.getId();
+                CardMyNotes myNotes = CardMyNotesMapping.toCardNotes(id, doc);
+                if (myNotes != null) {
+                    arrayNotes.add(myNotes);
                 }
 
-                // заполняем массив заметок
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    CardMyNotes myNotes = ds.getValue(CardMyNotes.class);
-                    if (myNotes != null){
-                        arrayNotes.add(myNotes);
+            }
+        }
+
+        // получим коллекцию документов, отсортированной по дате
+        /*collection.orderBy(CardMyNotesMapping.Fields.DATE_CREATE, Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Map<String, Object> doc = document.getData();
+                            String id = document.getId();
+                            CardMyNotes myNotes = CardMyNotesMapping.toCardNotes(id, doc);
+                            if (myNotes != null) {
+                                arrayNotes.add(myNotes);
+                            }
+
+                        }
                     }
-                }
+                }).addOnFailureListener(e -> {
 
-                if(adapter!=null){
-                   adapter.updateCardNotes(arrayNotes);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        };
-        // добавление слушателя
-        mDataBase.addValueEventListener(eventListener);
+                });*/
 
         // для теста (лишнее)
-        CardMyNotes myNotes1 = new CardMyNotes("1","Notes1", "Тестовая первая заметка", "01.01.2021");
-        CardMyNotes myNotes2 = new CardMyNotes("2","Notes2", "Тестовая вторая заметка", "02.01.2021");
-        CardMyNotes myNotes3 = new CardMyNotes("3","Notes3", "Тестовая третья заметка", "03.01.2021");
+        //CardMyNotes myNotes1 = new CardMyNotes("1", "Notes1", "Тестовая первая заметка", "01.01.2021");
+       // CardMyNotes myNotes2 = new CardMyNotes("2", "Notes2", "Тестовая вторая заметка", "02.01.2021");
+        //CardMyNotes myNotes3 = new CardMyNotes("3", "Notes3", "Тестовая третья заметка", "03.01.2021");
         // добавим их в массив
-        arrayNotes.add(myNotes1);
-        arrayNotes.add(myNotes2);
-        arrayNotes.add(myNotes3);
-
+       // arrayNotes.add(myNotes1);
+        //arrayNotes.add(myNotes2);
+       // arrayNotes.add(myNotes3);
+        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_notes_line);
         adapter = new ListNotesAdapter(getContext(), arrayNotes, getActivity().getResources().getConfiguration().orientation);
         recyclerView.setAdapter((ListNotesAdapter) adapter);
 
@@ -119,6 +128,7 @@ public class FragmentList extends Fragment {
         //adapter.setDataSource(myNotes);
 
     }
+
     private void openFragmentNotes(int position) {
         Fragment frNotes = new FragmentNotes();
         Bundle arguments = new Bundle();
