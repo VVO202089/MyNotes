@@ -18,6 +18,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,11 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
     private ArrayList<CardMyNotes> ListNotes;
     private CardMyNotesSource dataSource;
     private int orientation;
+    private static final String NOTES_COLLECTION = "NOTES";
+    // база данных FireStore
+    private FirebaseFirestore store = FirebaseFirestore.getInstance();
+    // коллекция документов
+    private CollectionReference collection = store.collection(NOTES_COLLECTION);
 
     private int position;
 
@@ -57,39 +65,31 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
 
     @Override
     public void deleteCardNotes(int position) {
+        collection.document(ListNotes.get(position).getId()).delete();
         ListNotes.remove(position);
         notifyDataSetChanged();
     }
 
-    public void updateCardNotes(ArrayList<CardMyNotes> listNotesFireBase) {
-        ListNotes.clear();
-        // по - другому хз как
-        for (CardMyNotes notes:listNotesFireBase) {
-            ListNotes.add(notes);
+    @Override
+    public void clearCardNotes() {
+        for (CardMyNotes myNotes : ListNotes) {
+            collection.document(myNotes.getId()).delete();
         }
+        ListNotes = new ArrayList<CardMyNotes>();
+    }
+
+    @Override
+    public void updateList() {
+        // по - другому хз как
         notifyDataSetChanged();
     }
 
-    @Override
-    public void addCardNotes(CardMyNotes cardNotes) {
-        ListNotes.add(cardNotes);
-    }
-
-    @Override
-    public void clearCardNotes() {
-        ListNotes.clear();
-    }
-
-    //@Override
-    //public void initialized(CardMyNotes myNotes) {
-//
-   // }
-
-    // конструкто класса
-    public ListNotesAdapter(Context context, ArrayList<CardMyNotes> ListNotes,int orientation) {
+    // конструктор класса
+    public ListNotesAdapter(Context context, ArrayList<CardMyNotes> ListNotes, int orientation, CollectionReference collection) {
         this.inflater = LayoutInflater.from(context);
         this.ListNotes = ListNotes;
         this.orientation = orientation;
+        this.collection = collection;
     }
 
     @NonNull
@@ -116,13 +116,21 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
 
         Fragment frNotes = new FragmentNotes();
         Bundle arguments = new Bundle();
-        arguments.putSerializable(CardMyNotes.class.getSimpleName(),ListNotes.get(position));
+        arguments.putSerializable(CardMyNotes.class.getSimpleName(), ListNotes.get(position));
+        // так же передадим позицию заметки в списке
+        arguments.putInt("position", position);
         frNotes.setArguments(arguments);
-        FragmentManager fragmentManager = ((AppCompatActivity)inflater.getContext()).getSupportFragmentManager();
+        FragmentManager fragmentManager = ((AppCompatActivity) inflater.getContext()).getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_list_insert,frNotes)
+                .replace(R.id.fragment_list_insert, frNotes)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void setFilter(ArrayList<CardMyNotes> newList) {
+        ListNotes = new ArrayList<>();
+        ListNotes.addAll(newList);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
@@ -133,38 +141,36 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
             view.setOnCreateContextMenuListener(this);
             textView_notes = (TextView) view.findViewById(R.id.textView_notes_list);
             textView_notes.setOnClickListener(v -> {
-                //if (listener != null) {
-                    // инициализируем меню
-                    PopupMenu menu = new PopupMenu(v.getContext(), view);
-                    menu.inflate(R.menu.cards_menu);
-                    menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            return false;
-                        }
-                    });
-                    menu.setOnMenuItemClickListener(item -> {
-                        switch (item.getItemId()) {
-                            case R.id.action_del:
-                               deleteCardNotes(getAdapterPosition());
-                                break;
-                            case R.id.action_open:
-                                // откроем карточку заметки
-                                openCard(getAdapterPosition());
-                                break;
-                            default:
-                                System.out.println("default");
-                        }
+                // инициализируем меню
+                PopupMenu menu = new PopupMenu(v.getContext(), view);
+                menu.inflate(R.menu.cards_menu);
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
                         return false;
-                    });
-                    menu.show();
-                //}
+                    }
+                });
+                menu.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.action_del:
+                            deleteCardNotes(getAdapterPosition());
+                            break;
+                        case R.id.action_open:
+                            // откроем карточку заметки
+                            openCard(getAdapterPosition());
+                            break;
+                        default:
+                            System.out.println("default");
+                    }
+                    return false;
+                });
+                menu.show();
             });
         }
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(Menu.NONE, R.id.action_open,Menu.NONE, R.string.Open);
+            menu.add(Menu.NONE, R.id.action_open, Menu.NONE, R.string.Open);
             menu.add(Menu.NONE, R.id.action_del, Menu.NONE, R.string.Del);
         }
 

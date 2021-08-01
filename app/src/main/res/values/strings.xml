@@ -11,8 +11,16 @@
     <string name="Favorite">Избранное</string>
     <string name="more">Больше</string>
     <string name="add">Добавить</string>
-    <string name="clear">Очистить</string>
+    <string name="clearList">Очистить</string>
     <string name="Open">Открыть</string>
     <string name="Del">Удалить</string>
     <string name="SaveNotes">Сохранить</string>
+    <string name="my_notes">My notes</string>
+    <string name="NameNotes">Название заметки</string>
+    <string name="DateNotes">Дата заметки</string>
+    <string name="DescriptionNotes">Описание заметки</string>
+    <string name="ButtonSave">Сохранить</string>
+    <string name="ButtonListNotes">К списку заметок</string>
+    <string name="clear">Очистить</string>
+    <string name="TurnDarkTheme">Темная тема</string>
 </resources>

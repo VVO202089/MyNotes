@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="My notes"
+        android:text="@string/my_notes"
         android:textSize="24sp"
         android:textStyle="italic" />
 
@@ -16,34 +16,38 @@
         android:id="@+id/labelNotesName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Название заметки" />
+        android:text="@string/NameNotes"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="18sp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/DateNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Дата заметки" />
+        android:text="@string/DateNotes"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editTextDate"
-        android:layout_width="match_parent"
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="date" />
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:spinnersShown="true" />
 
     <TextView
         android:id="@+id/labelDescNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Описание заметки" />
+        android:text="@string/DescriptionNotes"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editDescNotes"
@@ -57,12 +61,12 @@
         android:id="@+id/SaveNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Сохранить" />
+        android:text="@string/ButtonSave" />
 
     <Button
         android:id="@+id/goListNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="К списку заметок" />
+        android:text="@string/ButtonListNotes" />
 
 </LinearLayout>

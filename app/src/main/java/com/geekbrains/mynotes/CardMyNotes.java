@@ -11,15 +11,15 @@ public class CardMyNotes implements Serializable {
     private String id;          // идентификатор
     private String name;        // имя заметки
     private String description; // описание
-    private String dateCreate;  // дата создания
+    private Date dateCreate;  // дата создания
 
-    public CardMyNotes() {}
+    public CardMyNotes(String s) {}
 
     protected CardMyNotes(Parcel in) {
         id = in.readString();
         name = in.readString();
         description = in.readString();
-        dateCreate = in.readString();
+        dateCreate = new Date(in.readLong());
     }
 
     public void setName(String name) {
@@ -30,11 +30,11 @@ public class CardMyNotes implements Serializable {
         this.description = description;
     }
 
-    public void setDateCreate(String dateCreate) {
+    public void setDateCreate(Date dateCreate) {
         this.dateCreate = dateCreate;
     }
 
-    public CardMyNotes(String name, String description, String dateCreate) {
+    public CardMyNotes(String name, String description, Date dateCreate) {
         this.name = name;
         this.description = description;
         this.dateCreate = dateCreate;
@@ -56,7 +56,7 @@ public class CardMyNotes implements Serializable {
         return description;
     }
 
-    public String getDateCreate() {
+    public Date getDateCreate() {
         return dateCreate;
     }
 
