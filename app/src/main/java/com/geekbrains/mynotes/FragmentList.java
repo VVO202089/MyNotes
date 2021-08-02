@@ -1,5 +1,7 @@
 package com.geekbrains.mynotes;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -7,6 +9,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +37,14 @@ import java.util.Map;
 public class FragmentList extends Fragment {
 
     private CardMyNotes myNotes;
+    private CardMyNotesSource adapter;
+    private ArrayList<CardMyNotes> arrayNotes = new ArrayList<CardMyNotes>();
+    private static final String NOTES_COLLECTION = "NOTES";
+
+    // база данных FireStore
+    private FirebaseFirestore store = FirebaseFirestore.getInstance();
+    // коллекция документов
+    private CollectionReference collection = store.collection(NOTES_COLLECTION);
 
     public ArrayList<CardMyNotes> getArrayNotes() {
         return arrayNotes;
@@ -41,17 +53,6 @@ public class FragmentList extends Fragment {
     public CardMyNotesSource getAdapter() {
         return adapter;
     }
-
-    private CardMyNotesSource adapter;
-    private ArrayList<CardMyNotes> arrayNotes = new ArrayList<CardMyNotes>();
-    private FragmentActivity myContext;
-    private String NOTES_KEY = "NOTES";
-    private final String BASE_URL = "https://mynotes-d6047-default-rtdb.firebaseio.com/";
-    private static final String NOTES_COLLECTION = "NOTES";
-    // база данных FireStore
-    private FirebaseFirestore store = FirebaseFirestore.getInstance();
-    // коллекция документов
-    private CollectionReference collection = store.collection(NOTES_COLLECTION);
 
     @Nullable
     @Override
@@ -63,20 +64,25 @@ public class FragmentList extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView(view);
+        //initOtherElements(view);
     }
+
+    //private void initOtherElements(View view) {
+    //    btnAlertDeleteNotes = (Button) view.findViewById(R.id.AlertDelete);
+    //}
 
     private void initRecyclerView(View v) {
         // очищаем массив заметок
         arrayNotes.clear();
 
         collection.orderBy(CardMyNotesMapping.Fields.DATE_CREATE, Query.Direction.DESCENDING).get()
-              .addOnCompleteListener(task -> {
+                .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Map<String, Object> doc = document.getData();
                             String id = document.getId();
                             Date dateNotes = document.getTimestamp("dateCreate").toDate();
-                            CardMyNotes myNotes = CardMyNotesMapping.toCardNotes(id, doc,dateNotes);
+                            CardMyNotes myNotes = CardMyNotesMapping.toCardNotes(id, doc, dateNotes);
                             if (myNotes != null) {
                                 arrayNotes.add(myNotes);
                             }
@@ -86,12 +92,11 @@ public class FragmentList extends Fragment {
                 });
 
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_notes_line);
-        adapter = new ListNotesAdapter(getContext(),
+        adapter = new ListNotesAdapter(getActivity(),
                 arrayNotes,
                 getActivity().getResources().getConfiguration().orientation
-                ,collection);
+                , collection);
         recyclerView.setAdapter((ListNotesAdapter) adapter);
-
     }
 
     private void openFragmentNotes(int position) {

@@ -23,4 +23,8 @@
     <string name="ButtonListNotes">К списку заметок</string>
     <string name="clear">Очистить</string>
     <string name="TurnDarkTheme">Темная тема</string>
+    <string name="AlertDeleteNotes">Вы уверены?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="dunno">Не Знаю</string>
 </resources>

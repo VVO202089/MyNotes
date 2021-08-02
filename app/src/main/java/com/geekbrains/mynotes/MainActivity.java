@@ -11,8 +11,10 @@ import androidx.fragment.app.FragmentTransaction;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private ListNotesAdapter adapter;
     private int orientation;
     private SwitchCompat turnDarkTheme;
+    private Boolean ChooseDarkTheme = false;
     private static final String NOTES_COLLECTION = "NOTES";
     // база данных FireStore
     private FirebaseFirestore store = FirebaseFirestore.getInstance();
@@ -44,6 +47,21 @@ public class MainActivity extends AppCompatActivity {
         orientation = getResources().getConfiguration().orientation;
         addFragmentList();
         initToolbar();
+
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putBoolean("ChooseDarkTheme",turnDarkTheme.isChecked());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ChooseDarkTheme = savedInstanceState.getBoolean("ChooseDarkTheme");
+        // установим тему
+        setThemeUsers(ChooseDarkTheme);
     }
 
     private void initToolbar() {
@@ -89,11 +107,15 @@ public class MainActivity extends AppCompatActivity {
         // установим текст программно (неполучилось этого сделать в XML)
         turnDarkTheme.setText("Темная тема");
         turnDarkTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            ChooseDarkTheme = isChecked;
             setThemeUsers(isChecked);
             recreate();
+            //finish();
+            //startActivity(getIntent());
         });
         // установим выбранную тему, установленную по умолчанию
-        setThemeUsers(turnDarkTheme.isChecked());
+        setThemeUsers(ChooseDarkTheme);
+        turnDarkTheme.setChecked(ChooseDarkTheme);
         return true;
         //return super.onCreateOptionsMenu(menu);
     }
@@ -126,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addFragmentList() {
+        // передадим параметры
+        Bundle bundle = new Bundle();
+
         fragmentList = new FragmentList();
         //Получить менеджер фрагментов
         FragmentManager fragmentManager = getSupportFragmentManager();

@@ -1,6 +1,8 @@
 package com.geekbrains.mynotes;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -9,8 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,9 +31,11 @@ import java.util.List;
 public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.ViewHolder> implements CardMyNotesSource {
 
     private LayoutInflater inflater;
+    private Context context;
     private ArrayList<CardMyNotes> ListNotes;
     private CardMyNotesSource dataSource;
     private int orientation;
+    //private Button btnAlertDeleteNotes;
     private static final String NOTES_COLLECTION = "NOTES";
     // база данных FireStore
     private FirebaseFirestore store = FirebaseFirestore.getInstance();
@@ -65,10 +71,81 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
 
     @Override
     public void deleteCardNotes(int position) {
-        collection.document(ListNotes.get(position).getId()).delete();
-        ListNotes.remove(position);
-        notifyDataSetChanged();
+        // создаем диалог перед удалением заметки
+        createDeleteNotesDialog();
     }
+
+    private void createDeleteNotesDialog() {
+        // создаем билдер
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        // укажем заголовок окна
+        builder.setTitle(R.string.AlertDeleteNotes)
+                .setCancelable(false)
+                .setNegativeButton(R.string.no,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Toast.makeText(context, "Нет!", Toast.LENGTH_SHORT).show();
+                                notifyDataSetChanged();
+                            }
+                        })
+                .setNeutralButton(R.string.dunno,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Toast.makeText(context, "Не знаю!", Toast.LENGTH_SHORT).show();
+                                notifyDataSetChanged();
+                            }
+                        })
+                .setPositiveButton(R.string.yes,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Toast.makeText(context, "Да", Toast.LENGTH_SHORT).show();
+                                collection.document(ListNotes.get(position).getId()).delete();
+                                ListNotes.remove(position);
+                                notifyDataSetChanged();
+                            }
+                        });
+        // покажем его
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    /*private View.OnClickListener clickAlertDeleteNotes = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // создаем билдер
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            // укажем заголовок окна
+            builder.setTitle(R.string.AlertDeleteNotes)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.no,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(context, "Нет!", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                    .setNeutralButton(R.string.dunno,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(context, "Не знаю!", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                    .setPositiveButton(R.string.yes,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(context, "Да", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+            // покажем его
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+    };*/
 
     @Override
     public void clearCardNotes() {
@@ -85,8 +162,12 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
     }
 
     // конструктор класса
-    public ListNotesAdapter(Context context, ArrayList<CardMyNotes> ListNotes, int orientation, CollectionReference collection) {
+    public ListNotesAdapter(Context context,
+                            ArrayList<CardMyNotes> ListNotes,
+                            int orientation,
+                            CollectionReference collection) {
         this.inflater = LayoutInflater.from(context);
+        this.context = context;
         this.ListNotes = ListNotes;
         this.orientation = orientation;
         this.collection = collection;
@@ -139,17 +220,13 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
         ViewHolder(View view) {
             super(view);
             view.setOnCreateContextMenuListener(this);
+            // пока не понятно
             textView_notes = (TextView) view.findViewById(R.id.textView_notes_list);
             textView_notes.setOnClickListener(v -> {
                 // инициализируем меню
                 PopupMenu menu = new PopupMenu(v.getContext(), view);
                 menu.inflate(R.menu.cards_menu);
-                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        return false;
-                    }
-                });
+                menu.setOnMenuItemClickListener(item -> false);
                 menu.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.action_del:
