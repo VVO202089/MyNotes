@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -112,41 +113,6 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
         alertDialog.show();
     }
 
-    /*private View.OnClickListener clickAlertDeleteNotes = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // создаем билдер
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            // укажем заголовок окна
-            builder.setTitle(R.string.AlertDeleteNotes)
-                    .setCancelable(false)
-                    .setNegativeButton(R.string.no,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(context, "Нет!", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                    .setNeutralButton(R.string.dunno,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(context, "Не знаю!", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                    .setPositiveButton(R.string.yes,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(context, "Да", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-            // покажем его
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-        }
-    };*/
-
     @Override
     public void clearCardNotes() {
         for (CardMyNotes myNotes : ListNotes) {
@@ -211,7 +177,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
     public void setFilter(ArrayList<CardMyNotes> newList) {
         ListNotes = new ArrayList<>();
         ListNotes.addAll(newList);
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {

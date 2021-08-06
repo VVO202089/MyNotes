@@ -27,4 +27,7 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="dunno">Не Знаю</string>
+    <string name="Cancel">Отмена</string>
+    <string name="menu_save">Сохранить</string>
+    <string name="Save">Сохранить</string>
 </resources>
