@@ -168,10 +168,10 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.View
         arguments.putInt("position", position);
         frNotes.setArguments(arguments);
         FragmentManager fragmentManager = ((AppCompatActivity) inflater.getContext()).getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_list_insert, frNotes)
-                .addToBackStack(null)
-                .commit();
+       // fragmentManager.beginTransaction()
+       //         .replace(R.id.fragment_list_insert, frNotes)
+       //         .addToBackStack(null)
+        //        .commit();
     }
 
     public void setFilter(ArrayList<CardMyNotes> newList) {

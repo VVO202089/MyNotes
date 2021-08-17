@@ -105,10 +105,10 @@ public class FragmentList extends Fragment {
         arguments.putSerializable(CardMyNotes.class.getSimpleName(), arrayNotes.get(position));
         frNotes.setArguments(arguments);
         FragmentManager fragmentManager = getChildFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_list_insert, frNotes)
-                .addToBackStack(null)
-                .commit();
+        //fragmentManager.beginTransaction()
+        //        .replace(R.id.fragment_list_insert, frNotes)
+        //        .addToBackStack(null)
+        //        .commit();
     }
 
     @Override

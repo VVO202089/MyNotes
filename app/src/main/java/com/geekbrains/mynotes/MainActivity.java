@@ -16,13 +16,18 @@ import android.widget.EditText;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.events.Event;
+import com.google.firebase.events.Publisher;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+//import java.util.concurrent.Flow;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Navigation navigation;
+    //private Publisher publisher = new Publisher();
     private FragmentList fragmentListObj;
     private ListNotesAdapter adapter;
     private Fragment fragmentList;
@@ -38,10 +43,20 @@ public class MainActivity extends AppCompatActivity {
     // коллекция документов
     private CollectionReference collection = store.collection(NOTES_COLLECTION);
 
+    public Navigation getNavigation() {
+        return navigation;
+    }
+
+    //public Publisher getPublisher() {
+    //    return publisher;
+    //}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //navigation = new Navigation(getSupportFragmentManager());
+        //getNavigation().addFragment(StartFragment.newInstance(), false);
         orientation = getResources().getConfiguration().orientation;
         addFragmentList();
         initToolbar();
@@ -106,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 adapter.setFilter(newList);
+                adapter.updateList();
                 return true;
             }
         });
@@ -194,13 +210,13 @@ public class MainActivity extends AppCompatActivity {
         //Получить менеджер фрагментов
         FragmentManager fragmentManager = getSupportFragmentManager();
         // Открыть транзакцию
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_list_insert, fragmentList);
+        //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //fragmentTransaction.replace(R.id.fragment_list_insert, fragmentList);
         //fragmentTransaction.replace((orientation == Configuration.ORIENTATION_PORTRAIT)
         //       ?R.id.fragment_notes_insert :R.id.fragment_list_insert_land, fragment);
-        fragmentTransaction.addToBackStack(null);
+       // fragmentTransaction.addToBackStack(null);
         // Закрыть транзакцию
-        fragmentTransaction.commit();
+        //fragmentTransaction.commit();
     }
 
     private void addFragmentNotes() {
@@ -209,10 +225,10 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         // Открыть транзакцию
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_list_insert, fragment);
-        fragmentTransaction.addToBackStack(null);
+        //fragmentTransaction.replace(R.id.fragment_list_insert, fragment);
+        //fragmentTransaction.addToBackStack(null);
         // Закрыть транзакцию
-        fragmentTransaction.commit();
+        //fragmentTransaction.commit();
     }
 
 }

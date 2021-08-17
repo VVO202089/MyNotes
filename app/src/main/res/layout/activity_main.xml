@@ -14,10 +14,10 @@
         app:titleTextColor="@color/white"/>
 
     <FrameLayout
-        android:id="@+id/fragment_list_insert"
-        android:name="com.geekbrains.mynotes.FragmentList"
+        android:id="@+id/fragment_start"
+        android:name="com.geekbrains.mynotes.StartFragmentAuth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_start" />
 
 </LinearLayout>

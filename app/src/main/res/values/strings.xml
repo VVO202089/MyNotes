@@ -30,4 +30,7 @@
     <string name="Cancel">Отмена</string>
     <string name="menu_save">Сохранить</string>
     <string name="Save">Сохранить</string>
+    <string name="continue_">Продолжить</string>
+    <string name="sign_out">Sign out</string>
+    <string name="sign_in">sign_in</string>
 </resources>
