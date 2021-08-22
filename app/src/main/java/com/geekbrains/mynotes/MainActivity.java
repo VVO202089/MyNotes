@@ -1,23 +1,26 @@
 package com.geekbrains.mynotes;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-import androidx.appcompat.widget.Toolbar;
-
-import com.google.firebase.events.Event;
-import com.google.firebase.events.Publisher;
+import com.geekbrains.mynotes.autorization.GoogleAutorization;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -26,11 +29,25 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    // элементы управления
+    private TextView tvRegViewTop;
+    private TextView tvRegViewBottom;
+    private Button btnSignInGoogle;
+    private Button btnSignInVK;
+    private Button btnSignInFacebook;
+    private Button btnSignInEmail;
+
+    // авторизация Google
+    private GoogleAutorization googleAutorization = new GoogleAutorization(this);
+    private GoogleSignInClient googleSignInClient;
+
+    /*// прочая старая херня
     private Navigation navigation;
     //private Publisher publisher = new Publisher();
     private FragmentList fragmentListObj;
     private ListNotesAdapter adapter;
     private Fragment fragmentList;
+    private Fragment fragmentStart;
     private CardMyNotes myNotes;
     private ArrayList<CardMyNotes> arrayNotes = new ArrayList<CardMyNotes>();
     private int orientation;
@@ -47,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         return navigation;
     }
 
+     */
+
     //public Publisher getPublisher() {
     //    return publisher;
     //}
@@ -55,14 +74,57 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initElements();
         //navigation = new Navigation(getSupportFragmentManager());
         //getNavigation().addFragment(StartFragment.newInstance(), false);
-        orientation = getResources().getConfiguration().orientation;
-        addFragmentList();
-        initToolbar();
+        //orientation = getResources().getConfiguration().orientation;
+        //addFragmentStart();
+        //addFragmentList();
+        //initToolbar();
+    }
+
+    private void initElements() {
+
+        // проинициализируем переменные элементов управления
+        tvRegViewTop = findViewById(R.id.textRegViewTop);
+        tvRegViewBottom = findViewById(R.id.textReg_ViewBottom);
+        btnSignInGoogle = findViewById(R.id.sign_in_google);
+        btnSignInVK = findViewById(R.id.sign_in_vk);
+        btnSignInFacebook = findViewById(R.id.sign_in_facebook);
+        btnSignInEmail = findViewById(R.id.sign_in_email);
+
+        // навесим обработчики событий
+        btnSignInGoogle.setOnClickListener(view -> {
+            googleAutorization.initGoogleSign();
+            // получим сам клиент
+            //googleSignInClient = googleAutorization.getGoogleSignInClient();
+           // Intent intent = googleAutorization.signIn(googleSignInClient);
+           // startActivityForResult(intent,googleAutorization.getRcSignIn());
+        });
+        btnSignInVK.setOnClickListener(view -> {
+
+        });
+        btnSignInFacebook.setOnClickListener(view -> {
+
+        });
+        btnSignInEmail.setOnClickListener(view -> {
+
+        });
+
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == googleAutorization.getRcSignIn()) {
+            // Когда сюда возвращается TASK, результаты аутентификаи уже готовы
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            googleAutorization.handleSignInResult(task);
+        }
+    }
+
+    /*@Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         //    outState.putBoolean("ChooseDarkTheme",turnDarkTheme.isChecked());
@@ -91,9 +153,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+     */
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_drawer, menu);
+
+        // пока закомментируем весь когд в данном обработчике
+        // так как пока непонятно, как вызывать его повторно
+
+       /* getMenuInflater().inflate(R.menu.menu_drawer, menu);
         // инициализация адаптера и списка заметок
         fragmentListObj = ((FragmentList) fragmentList);
         adapter = ((ListNotesAdapter) fragmentListObj.getAdapter());
@@ -142,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
         turnDarkTheme.setChecked(ChooseDarkTheme);*/
         return true;
         //return super.onCreateOptionsMenu(menu);
+        /*
     }
 
     /*private void setThemeUsers(boolean isChecked) {
@@ -149,10 +219,10 @@ public class MainActivity extends AppCompatActivity {
             setTheme(R.style.AppTheme_AppBarOverlay);
         }else {
             setTheme(R.style.AppTheme);
-        }
-    }*/
+        } */
+    }
 
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // проверяем, что нажато и делаем соответствующее действие
         adapter = ((ListNotesAdapter) fragmentListObj.getAdapter());
@@ -203,7 +273,20 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void addFragmentList() {
+    private void addFragmentStart() {
+        fragmentStart = new StartFragmentAuth();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
+                .replace(R.id.fragment_start,fragmentStart)
+                .addToBackStack(null);
+        fragmentTransaction.commit();
+
+
+    }
+
+    */
+
+    /*private void addFragmentList() {
         // передадим параметры
         Bundle bundle = new Bundle();
         fragmentList = new FragmentList();
@@ -219,6 +302,17 @@ public class MainActivity extends AppCompatActivity {
         //fragmentTransaction.commit();
     }
 
+    /*@Override
+    public void replaceStartFragment() {
+        // передадим параметры
+        Bundle bundle = new Bundle();
+        fragmentList = new FragmentList();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
+                .replace(R.id.fragment_list,fragmentList)
+                .addToBackStack(null);
+        fragmentTransaction.commit();
+    }
     private void addFragmentNotes() {
         Fragment fragment = new FragmentNotes();
         //Получить менеджер фрагментов
@@ -230,5 +324,7 @@ public class MainActivity extends AppCompatActivity {
         // Закрыть транзакцию
         //fragmentTransaction.commit();
     }
+
+     */
 
 }

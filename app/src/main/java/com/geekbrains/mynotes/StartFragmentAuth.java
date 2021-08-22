@@ -1,12 +1,8 @@
 package com.geekbrains.mynotes;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,20 +11,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
-//import com.google.firebase.inappmessaging.model.Button;
 
 public class StartFragmentAuth extends Fragment {
 
@@ -48,7 +41,13 @@ public class StartFragmentAuth extends Fragment {
     private Button buttonSignIn;
     private TextView emailView;
     private Button buttonSignOut;
-    private MaterialButton continue_;
+    private Button continue_;
+
+    //private OnFragmentListListener fragmentListListener;
+
+    /*interface OnFragmentListListener{
+        void replaceStartFragment();
+    }*/
 
     public static StartFragmentAuth newInstance() {
         StartFragmentAuth fragmentAuth = new StartFragmentAuth();
@@ -59,9 +58,7 @@ public class StartFragmentAuth extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_start, container, false);
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            initGoogleSign();
-        //}
+        initGoogleSign();
         initView(view);
         enableSign();
         return view;
@@ -72,6 +69,7 @@ public class StartFragmentAuth extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         myContext = context;
+        //fragmentListListener = (OnFragmentListListener)context;
         // получим навигацию по приложению, чтобы перейти  на фрагмент со списком карточек
         // получим активити
         //MainActivity activity = (MainActivity) context;
@@ -91,8 +89,8 @@ public class StartFragmentAuth extends Fragment {
         // проверим, входил ли пользователь в приложение через Google
         GoogleSignInAccount account = null;
         //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            account = GoogleSignIn.getLastSignedInAccount(myContext);
-       // }
+        account = GoogleSignIn.getLastSignedInAccount(myContext);
+        // }
         if (account != null) {
             // действия, при залогиненном пользователе
         }
@@ -118,7 +116,7 @@ public class StartFragmentAuth extends Fragment {
 
             // Регистрация прошла успешно
             disableSign();
-            updateUI(account.getEmail());
+            updateUI("Hello, ".concat(account.getEmail()));
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure
             // reason. Please refer to the GoogleSignInStatusCodes class
@@ -128,8 +126,8 @@ public class StartFragmentAuth extends Fragment {
     }
 
     // Запишем полученный Email
-    private void updateUI(String email) {
-        emailView.setText(email);
+    private void updateUI(String str) {
+        emailView.setText(str);
     }
 
     private void disableSign() {
@@ -153,7 +151,7 @@ public class StartFragmentAuth extends Fragment {
     // инициализация пользовательских элементов
     private void initView(View view) {
         // кнопка входа
-        buttonSignIn = view.findViewById(R.id.sign_in_button);
+        buttonSignIn = view.findViewById(R.id.sign_in_google);
         buttonSignIn.setOnClickListener(v -> {
             signIn();
         });
@@ -168,21 +166,28 @@ public class StartFragmentAuth extends Fragment {
         continue_.setOnClickListener(v -> {
             // открываем фрагмент со списком заметок
             replaceStartFragment();
+            //fragmentListListener.replaceStartFragment();
             //navigation.addFragment(StartFragmentAuth.newInstance(), false);
         });
     }
 
     private void replaceStartFragment() {
+
         // передадим параметры
         Bundle bundle = new Bundle();
         fragmentList = new FragmentList();
-        //Получить менеджер фрагментов
         FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
+                .replace(R.id.fragment_list,fragmentList)
+                .addToBackStack(null);
+        fragmentTransaction.commit();
+        //Получить менеджер фрагментов
+        //FragmentManager fragmentManager = getChildFragmentManager();
         // Открыть транзакцию
         //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
-         //       .replace(R.id.fragment_list_insert, frNotes)
-          //      .addToBackStack(null)
-           //     .commit();
+        //       .replace(R.id.fragment_list_insert, frNotes)
+        //      .addToBackStack(null)
+        //     .commit();
         //fragmentTransaction.replace(R.id.fragment_list_insert, fragmentList);
         //fragmentTransaction.replace((orientation == Configuration.ORIENTATION_PORTRAIT)
         //       ?R.id.fragment_notes_insert :R.id.fragment_list_insert_land, fragment);
@@ -199,21 +204,22 @@ public class StartFragmentAuth extends Fragment {
 
     // инициируем выход пользователя
     private void signOut() {
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            googleSignInClient.signOut()
-                    .addOnCompleteListener((Activity) myContext, task -> {
-                        // здесь выход из приложения
-                    });
-        //}
+        googleSignInClient.signOut()
+                .addOnCompleteListener((Activity) myContext, task -> {
+                    // очищаем данные о входе
+                    updateUI("");
+                    enableSign();
+                    // отключаем google ккаунт от приложения
+                    revokeAccess();
+                });
     }
+
     // при удалении google аккаунта должен быть выход из приложения
     private void revokeAccess() {
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            googleSignInClient.revokeAccess()
-                    .addOnCompleteListener((Activity) myContext, task -> {
+        googleSignInClient.revokeAccess()
+                .addOnCompleteListener((Activity) myContext, task -> {
 
-                    });
-        //}
+                });
     }
 
     // Разрешить аутентификацию и запретить остальные действия

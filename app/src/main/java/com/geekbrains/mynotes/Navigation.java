@@ -13,7 +13,7 @@ public class Navigation {
     }
 
     public void addFragment(Fragment fragment, boolean useBackStack) {
-        // Открыть транзакцию
+    /*    // Открыть транзакцию
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_start, fragment);
         if (useBackStack) {
@@ -21,6 +21,7 @@ public class Navigation {
         }
         // Закрыть транзакцию
         fragmentTransaction.commit();
-    }
 
+     */
+    }
 }

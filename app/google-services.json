@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "553030455753",
+    "firebase_url": "https://mynotes-d6047-default-rtdb.firebaseio.com",
     "project_id": "mynotes-d6047",
     "storage_bucket": "mynotes-d6047.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "553030455753-9pkd52m2sfokittjakmitoto1d329k50.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.geekbrains.mynotes",
+            "certificate_hash": "c2938a14bad133c15a951028702cd956ff4354a9"
+          }
+        },
         {
           "client_id": "553030455753-ickobvn9kmblnaaidt80p2pr031h29s3.apps.googleusercontent.com",
           "client_type": 3

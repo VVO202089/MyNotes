@@ -33,4 +33,10 @@
     <string name="continue_">Продолжить</string>
     <string name="sign_out">Sign out</string>
     <string name="sign_in">sign_in</string>
+    <string name="registrationTop">Зарегистрируйтесь или войдите через несколько предложенных вариантов</string>
+    <string name="registrationBottom">Приложение не распространяет никаких личных данных и не использует из в своих личных целях</string>
+    <string name="SignInGoogle">Войти через Google</string>
+    <string name="SignInVK">Войти через Вконтакте</string>
+    <string name="SignInFB">Войти через facebook</string>
+    <string name="SignInEmail">Регистрация через электронную почту</string>
 </resources>
