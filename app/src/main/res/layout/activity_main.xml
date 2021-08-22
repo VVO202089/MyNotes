@@ -3,16 +3,94 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/fragment_List"
-        android:name="com.geekbrains.mynotes.fragmentList"
+    <TextView
+        android:id="@+id/textRegViewTop"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:minHeight="48dp"
+        android:text="@string/registrationTop"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_google"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/sign_in_google"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="@string/SignInGoogle"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_vk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textRegViewTop" />
+
+    <Button
+        android:id="@+id/sign_in_vk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="@string/SignInVK"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_facebook"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_google" />
+
+    <Button
+        android:id="@+id/sign_in_facebook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="@string/SignInFB"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_vk" />
+
+    <Button
+        android:id="@+id/sign_in_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="@string/SignInEmail"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/textReg_ViewBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_facebook" />
+
+    <TextView
+        android:id="@+id/textReg_ViewBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:minHeight="48dp"
+        android:text="@string/registrationBottom"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_email"
+        app:layout_constraintVertical_bias="0.915" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
